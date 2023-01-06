@@ -92,7 +92,7 @@ public class Auto_Red_V1 extends LinearOpMode
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1.0, 16.0/9.0);
+            tfod.setZoom(1.15, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
@@ -105,9 +105,9 @@ public class Auto_Red_V1 extends LinearOpMode
         rf = hardwareMap.get(DcMotor.class, "rf");
 
         // motor spin direction (may change later) ;-;
-        lb.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.FORWARD);
         lf.setDirection(DcMotor.Direction.REVERSE);
-        rb.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.REVERSE);
         rf.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
@@ -156,19 +156,19 @@ public class Auto_Red_V1 extends LinearOpMode
             if (label.equals("1 Bolt"))
             {
                 // go forward 1 tile stafe left 1 tile
-                forwardAmt(1000, .6);
-                strafe(-1200, .4);
+                forwardAmt(1000, .3);
+                strafe(-1200, .2);
             }
             else if (label.equals("2 Bulb"))
             {
                 // go forward 1 tile
-                forwardAmt(1000, .6);
+                forwardAmt(1000, .3);
             }
             else
             {
                 // go forward 1 tile, strafe right 1 tile
-                forwardAmt(1000, .6);
-                strafe(1200, .4);
+                forwardAmt(1000, .3);
+                strafe(1200, .2);
             }
         }
     }

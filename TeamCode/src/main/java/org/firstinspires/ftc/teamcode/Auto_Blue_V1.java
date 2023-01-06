@@ -105,10 +105,17 @@ public class Auto_Blue_V1 extends LinearOpMode
         rf = hardwareMap.get(DcMotor.class, "rf");
 
         // motor spin direction (may change later) ;-;
-        lb.setDirection(DcMotor.Direction.REVERSE);
-        lf.setDirection(DcMotor.Direction.REVERSE);
-        rb.setDirection(DcMotor.Direction.FORWARD);
-        rf.setDirection(DcMotor.Direction.FORWARD);
+        lb.setDirection(DcMotor.Direction.FORWARD);
+        lf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.REVERSE);
+        rf.setDirection(DcMotor.Direction.REVERSE);
+
+        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
         waitForStart();
 
@@ -116,6 +123,9 @@ public class Auto_Blue_V1 extends LinearOpMode
             int counter = 0; // loop control variable so robot doesn't search forever
             String label = ""; // variable to change what label is detected
             double conf = 0.0; // keeps up with confidence of reading
+
+
+
             while (opModeIsActive()) {
                 counter++;
                 if (tfod != null) {
@@ -155,21 +165,36 @@ public class Auto_Blue_V1 extends LinearOpMode
             }
             if (label.equals("1 Bolt"))
             {
+
+
                 // go forward 1 tile stafe left 1 tile
-                forwardAmt(1000, .6);
-                strafe(-1200, .4);
+                forwardAmt(-1100, .3);
+                strafe(1300, .2);
+                forwardAmt(-400, .3);
+                stopRobot();
+
             }
             else if (label.equals("2 Bulb"))
             {
+
+
                 // go forward 1 tile
-                forwardAmt(1000, .6);
+                forwardAmt(-1500, .3);
+                stopRobot();
+
             }
             else
             {
+
+
                 // go forward 1 tile, strafe right 1 tile
-                forwardAmt(1000, .6);
-                strafe(1200, .4);
+                //forwardAmt(1400, .3);
+                forwardAmt(-1100, .3);
+                strafe(-1400, .2);
+                forwardAmt(-400, .3);
+                stopRobot();
             }
+
         }
     }
 
@@ -196,7 +221,7 @@ public class Auto_Blue_V1 extends LinearOpMode
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
+        tfodParameters.minResultConfidence = 0.80f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
@@ -208,6 +233,7 @@ public class Auto_Blue_V1 extends LinearOpMode
     }
     public void forwardAmt(int amt, double power) {
 
+
         rf.setTargetPosition(rf.getCurrentPosition() + amt);
         rb.setTargetPosition(rb.getCurrentPosition() + amt);
         lf.setTargetPosition(lf.getCurrentPosition() + amt);
@@ -216,7 +242,19 @@ public class Auto_Blue_V1 extends LinearOpMode
         runToPosition();
 
         while (opModeIsActive() && (rf.isBusy() && rb.isBusy() && lf.isBusy() && lb.isBusy())) {
-            telemetry.addData("Mode", "running");
+            //telemetry.addData("Mode", "running");
+            //telemetry.addData("LB", lb.getCurrentPosition());
+            //telemetry.addData("LF", lf.getCurrentPosition());
+            telemetry.addData("RB", rb.getCurrentPosition());
+            telemetry.addData("RF", rf.getCurrentPosition());
+            telemetry.addData("RB Power", rb.getPower());
+            telemetry.addData("RF Power", rf.getPower());
+            telemetry.addData("LB", lb.getCurrentPosition());
+            telemetry.addData("LF", lf.getCurrentPosition());
+            telemetry.addData("LB Power", lb.getPower());
+            telemetry.addData("LF Power", lf.getPower());
+
+
             telemetry.update();
             allPower(power);
         }
@@ -355,4 +393,3 @@ public class Auto_Blue_V1 extends LinearOpMode
         lb.setPower(power);
     }
 }
-
