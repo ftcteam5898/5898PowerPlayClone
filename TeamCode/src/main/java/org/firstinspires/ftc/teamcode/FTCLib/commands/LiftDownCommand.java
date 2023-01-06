@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 // this lift command does not use PID
-public class LiftCommand extends CommandBase {
+public class LiftDownCommand extends CommandBase {
 
     private LiftSubsystem subsystem;
     private ElapsedTime time;
@@ -13,17 +13,17 @@ public class LiftCommand extends CommandBase {
     private int junction;
     // junction values: 1 = low, 2 = medium, 3 = high
 
-    public LiftCommand(LiftSubsystem subsystem, ElapsedTime timer) {
+    public LiftDownCommand(LiftSubsystem subsystem, ElapsedTime timer) {
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
     @Override
     public void initialize() {
         time.reset();
-        subsystem.motorUp();
+        subsystem.motorDown();
         //liftTime = timeNeeded;
     }
-    @Override
+    @Override // tells the computer to use my code not the class im extending
     public boolean isFinished() {
         return time.seconds() >= liftTime;
     }
