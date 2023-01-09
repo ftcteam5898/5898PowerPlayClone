@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.FTCLib.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
@@ -11,6 +12,7 @@ public class CloseClawCommand extends CommandBase {
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
+
     @Override
     public void initialize() {
         this.subsystem.closeClaw();

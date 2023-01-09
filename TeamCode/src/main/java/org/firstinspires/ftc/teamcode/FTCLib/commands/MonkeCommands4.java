@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.FTCLib.commands;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -6,11 +7,10 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
 // blueleft
-public class MonkeCommands4 extends SequentialCommandGroup
-{
+public class MonkeCommands4 extends SequentialCommandGroup {
     private final Pose2d startPos = new Pose2d(63.0, -36.0, 180.0);
-    public MonkeCommands4(MecanumDriveSubsystem mecanumDriveSubsystem)
-    {
+
+    public MonkeCommands4(MecanumDriveSubsystem mecanumDriveSubsystem) {
         mecanumDriveSubsystem.setPoseEstimate(startPos);
         Trajectory traj1 = mecanumDriveSubsystem.trajectoryBuilder(startPos)
                 .forward(51.0)
@@ -86,7 +86,5 @@ public class MonkeCommands4 extends SequentialCommandGroup
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj15),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj16)
         );
-
-
     }
 }
