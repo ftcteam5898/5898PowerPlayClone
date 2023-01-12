@@ -4,8 +4,10 @@ package org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redright;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.PrintCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -28,6 +30,7 @@ import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.IntSupplier;
 
@@ -42,13 +45,8 @@ public class MonkeCommands1 extends SequentialCommandGroup {
 
     public MonkeCommands1(MecanumDriveSubsystem mecanumDriveSubsystem,
                           LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, IntSupplier tagID) {
-
-
         {
-
-
             LiftSubsystem lift = new LiftSubsystem(liftMotor);
-
 
             mecanumDriveSubsystem.setPoseEstimate(startPos);
             Trajectory traj1 = mecanumDriveSubsystem.trajectoryBuilder(startPos)
@@ -134,18 +132,27 @@ public class MonkeCommands1 extends SequentialCommandGroup {
                     // drop cone and wait till its done before continuing the trajectories
                     new WaitCommand(1500),
                     new WaitCommand(500).deadlineWith(new OpenClawCommand(clawSubsystem)),
-                    // temporary park code remove later
+                    // temporary park code positions selector go pee pee poo poo
                     new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez),
+                    new SelectCommand(new HashMap<Object, Command>() {{
+                        put(1, new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy)
+                                .alongWith(new LiftStop(liftSubsystem)));
+                        put(2, new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
+                                new LiftStop(liftSubsystem)));
+                        put(3, new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
+                                new LiftStop(liftSubsystem)));
+                    }}, () -> tagID // selector yippee im in pain
+                    )
                     //first park position code
                     //new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy).alongWith(
                     //      new LiftStop(liftSubsystem))
                     // second park position code
-                    new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
-                            new LiftStop(liftSubsystem)),
+                    //new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
+                            //new LiftStop(liftSubsystem)),
                     // third park position code
                     //new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
                     //new LiftStop(liftSubsystem)),
-                    new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem)) // apart of all park positions
+                    //new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem)) // apart of all park positions
                 /* join later
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj3),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj4).alongWith(
@@ -178,25 +185,6 @@ public class MonkeCommands1 extends SequentialCommandGroup {
                 // stack
                  */
             );
-            if (tagID.getAsInt() == 1) {
-                addCommands(
-                        new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy).alongWith(
-                                new LiftStop(liftSubsystem))
-                );
-            }
-            else if (tagID.getAsInt() == 2) {
-                addCommands(
-                        new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
-                                new LiftStop(liftSubsystem))
-                );
-            }
-            else {
-                addCommands(
-                        new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
-                                new LiftStop(liftSubsystem))
-                );
-            }
-
 
         }
 
