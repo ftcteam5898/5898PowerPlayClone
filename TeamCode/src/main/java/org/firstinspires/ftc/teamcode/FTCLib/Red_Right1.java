@@ -22,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 
 @Autonomous(name = "Red_Right1", group = "FTCLib_Red")
 public class Red_Right1 extends CommandOpMode {
@@ -51,10 +52,10 @@ public class Red_Right1 extends CommandOpMode {
         time = new ElapsedTime();
 
             schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
-
+            IntSupplier tagID = () -> 1;
             schedule(new WaitUntilCommand(this::isStarted)
                     .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, 1)));
+                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
         }
     }
 

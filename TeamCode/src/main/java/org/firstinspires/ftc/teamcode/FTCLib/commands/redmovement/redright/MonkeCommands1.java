@@ -29,6 +29,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 
 public class MonkeCommands1 extends SequentialCommandGroup {
     private final Pose2d startPos = new Pose2d(-63.0, -36.0, 0.0);
@@ -40,10 +41,11 @@ public class MonkeCommands1 extends SequentialCommandGroup {
     private LiftSubsystem lift;
 
     public MonkeCommands1(MecanumDriveSubsystem mecanumDriveSubsystem,
-                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, int tagID) {
+                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, IntSupplier tagID) {
 
 
         {
+
 
             LiftSubsystem lift = new LiftSubsystem(liftMotor);
 
@@ -176,13 +178,13 @@ public class MonkeCommands1 extends SequentialCommandGroup {
                 // stack
                  */
             );
-            if (tagID == 1) {
+            if (tagID.getAsInt() == 1) {
                 addCommands(
                         new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy).alongWith(
                                 new LiftStop(liftSubsystem))
                 );
             }
-            else if (tagID == 2) {
+            else if (tagID.getAsInt() == 2) {
                 addCommands(
                         new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
                                 new LiftStop(liftSubsystem))

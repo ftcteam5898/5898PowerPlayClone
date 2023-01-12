@@ -25,6 +25,7 @@ import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntSupplier;
 
 @Autonomous(name = "Red_Right1_AprilTags", group = "FTCLib_Red")
 public class Red_Right1_AprilTags extends CommandOpMode {
@@ -161,13 +162,15 @@ public class Red_Right1_AprilTags extends CommandOpMode {
             int tagForCommand = 0;
         if (tagOfInterest == null) tagForCommand = 1;
         else tagForCommand = tagOfInterest.id;
+        final int tagNum = tagForCommand;
+        IntSupplier tagID = () -> tagNum;
 
         telemetry.addData("Tag identified:", tagForCommand);
         telemetry.update();
 
             schedule(new WaitUntilCommand(this::isStarted)
                     .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagForCommand)));
+                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
         }
 
     public void tagToTelemetry(AprilTagDetection detection)
