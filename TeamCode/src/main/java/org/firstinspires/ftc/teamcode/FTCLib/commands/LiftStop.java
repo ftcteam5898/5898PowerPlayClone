@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode.FTCLib.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
@@ -6,27 +5,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 
-public class LiftCommand extends CommandBase {
+public class LiftStop extends CommandBase {
 
     private LiftSubsystem subsystem;
     private ElapsedTime time;
     private double liftTime;
 
-
-    public LiftCommand(LiftSubsystem subsystem, ElapsedTime timer) {
+    public LiftStop(LiftSubsystem subsystem) {
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
-        time = timer;
     }
     @Override
     public void initialize() {
-        time.reset();
-        subsystem.motorUp();
-        liftTime = 0.02;
-    }
-    @Override // tells the computer to use my code not the class im extending
-    public boolean isFinished() {
-        return time.seconds() >= liftTime;
+        subsystem.motorStop();
     }
 }
-

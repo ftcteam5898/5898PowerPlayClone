@@ -16,12 +16,13 @@ public class LiftDownCommand extends CommandBase {
     public LiftDownCommand(LiftSubsystem subsystem, ElapsedTime timer) {
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
+        time = timer;
     }
     @Override
     public void initialize() {
         time.reset();
         subsystem.motorDown();
-        //liftTime = timeNeeded;
+        liftTime = 0.02;
     }
     @Override // tells the computer to use my code not the class im extending
     public boolean isFinished() {
