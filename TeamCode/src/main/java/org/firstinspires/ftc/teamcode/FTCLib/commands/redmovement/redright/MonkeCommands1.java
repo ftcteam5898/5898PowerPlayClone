@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.FTCLib.Red_Right1;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.CloseClawCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftDownCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftStop;
@@ -34,21 +35,20 @@ public class MonkeCommands1 extends SequentialCommandGroup
     private ElapsedTime timer = new ElapsedTime();
     private double timeToLift;
 
-    // a lot of pain
-    private Red_Right1 pain;
-
-    public String ligma;
-    public Red_Right1 a;
-
     // to be used later
     private Motor liftMotor;
     private LiftSubsystem lift;
 
     public MonkeCommands1(MecanumDriveSubsystem mecanumDriveSubsystem,
+<<<<<<< Updated upstream
                           LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, int tagID)
     {
 
 
+=======
+                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem)
+    {
+>>>>>>> Stashed changes
         LiftSubsystem lift = new LiftSubsystem(liftMotor);
 
 
@@ -57,16 +57,26 @@ public class MonkeCommands1 extends SequentialCommandGroup
                 .lineToSplineHeading(new Pose2d(-13.0, -36.0, Math.toRadians(0.0)))
                 .build();
         Trajectory traj2 = mecanumDriveSubsystem.trajectoryBuilder(traj1.end())
-                .lineToSplineHeading(new Pose2d(-12.0, -24.0, Math.toRadians(0.0)))
+                .lineToSplineHeading(new Pose2d(-12.0, -25.5, Math.toRadians(0.0)))
                 .build();
         // stack cone
         // temporary park code remove later
         Trajectory trajdeez = mecanumDriveSubsystem.trajectoryBuilder(traj2.end())
-                .lineTo(new Vector2d(-13.0, -24.0))
+                .lineTo(new Vector2d(-13.0, -25.0))
                 .build();
+        // first park position code
         Trajectory trajy = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
-                .lineTo(new Vector2d(-13.0, -13.0))
+                .lineToSplineHeading(new Pose2d(-13.0, -13.0, Math.toRadians(270.0)))
                 .build();
+        // second park position code
+        Trajectory traj = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
+                .lineToSplineHeading(new Pose2d(-13.0, -36.0, Math.toRadians(270.0)))
+                .build();
+        // third park position code
+        Trajectory trajp = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
+                .lineToSplineHeading(new Pose2d(-13.0, -58.5, Math.toRadians(0.0)))
+                .build();
+
         // end of temporary code
         Trajectory traj3 = mecanumDriveSubsystem.trajectoryBuilder(traj2.end())
                 .lineTo(new Vector2d(-13.0, -34.0))
@@ -125,11 +135,19 @@ public class MonkeCommands1 extends SequentialCommandGroup
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj2),
                 // drop cone and wait till its done before continuing the trajectories
                 new WaitCommand(1500),
-                new WaitCommand(500).deadlineWith(new OpenClawCommand(clawSubsystem))
+                new WaitCommand(500).deadlineWith(new OpenClawCommand(clawSubsystem)),
                 // temporary park code remove later
-                //new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez),
+                new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez),
+                //first park position code
                 //new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy).alongWith(
-                        //new LiftStop(liftSubsystem))
+                  //      new LiftStop(liftSubsystem))
+                // second park position code
+                new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
+                        new LiftStop(liftSubsystem)),
+                // third park position code
+                //new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
+                        //new LiftStop(liftSubsystem)),
+                new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem)) // apart of all park positions
                 /* join later
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj3),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj4).alongWith(
@@ -162,8 +180,12 @@ public class MonkeCommands1 extends SequentialCommandGroup
                 // stack
                  */
         );
+<<<<<<< Updated upstream
 
+=======
+        }
+>>>>>>> Stashed changes
 
     }
-}
+
 
