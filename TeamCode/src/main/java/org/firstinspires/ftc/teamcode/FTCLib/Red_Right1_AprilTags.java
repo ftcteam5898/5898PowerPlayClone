@@ -78,6 +78,8 @@ public class Red_Right1_AprilTags extends CommandOpMode {
         //imageRec = new ImageRecognitionCommand(time);
         time = new ElapsedTime();
 
+        schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -157,13 +159,11 @@ public class Red_Right1_AprilTags extends CommandOpMode {
             sleep(20);
         }
             int tagForCommand = 0;
-        if (tagOfInterest == null) tagForCommand = 2;
+        if (tagOfInterest == null) tagForCommand = 1;
         else tagForCommand = tagOfInterest.id;
 
         telemetry.addData("Tag identified:", tagForCommand);
         telemetry.update();
-
-            schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
 
             schedule(new WaitUntilCommand(this::isStarted)
                     .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
