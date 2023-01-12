@@ -45,11 +45,9 @@ public class MonkeCommands1 extends SequentialCommandGroup
     private LiftSubsystem lift;
 
     public MonkeCommands1(MecanumDriveSubsystem mecanumDriveSubsystem,
-                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem,
-                          String deez)
+                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, int tagID)
     {
-        a.setLabel(ligma);
-        deez = ligma;
+
 
         LiftSubsystem lift = new LiftSubsystem(liftMotor);
 
@@ -120,7 +118,6 @@ public class MonkeCommands1 extends SequentialCommandGroup
 
         //after trajectories
         addCommands(
-                new PrintCommand(deez),
                 new WaitCommand(600),
                 // allowing the slide to move while the first command rush
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj1).alongWith(
@@ -166,18 +163,6 @@ public class MonkeCommands1 extends SequentialCommandGroup
                  */
         );
 
-        if (deez.equals("purpleDuck")) {
-            addCommands(
-                    new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez),
-                    new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy).alongWith(
-                            new LiftStop(liftSubsystem))
-            );
-        }
-        else if (deez.equals("mallard")) {
-            addCommands(
-                    new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez)
-            );
-        }
 
     }
 }

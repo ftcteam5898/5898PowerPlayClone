@@ -158,7 +158,7 @@ public class Red_Right1 extends CommandOpMode {
             ));
             schedule(new WaitUntilCommand(this::isStarted)
                     .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, label)));
+                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, 1)));
         }
     }
         private void initTfod () {
