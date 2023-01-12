@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.FTCLib.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
@@ -18,12 +19,14 @@ public class LiftDownCommand extends CommandBase {
         addRequirements(this.subsystem);
         time = timer;
     }
+
     @Override
     public void initialize() {
         time.reset();
         subsystem.motorDown();
         liftTime = 0.02;
     }
+
     @Override // tells the computer to use my code not the class im extending
     public boolean isFinished() {
         return time.seconds() >= liftTime;
