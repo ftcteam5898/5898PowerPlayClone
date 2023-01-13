@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.FTCLib;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -11,31 +10,29 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.openftc.apriltag.AprilTagDetection;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.bluemovement.blueright.MonkeCommands2;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redleft.MonkeCommands3;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
+import org.openftc.apriltag.AprilTagDetection;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.IntSupplier;
 
-@Autonomous(name = "Blue_Right1_AprilTags", group = "FTCLib_Blue")
-public class Blue_Right1 extends CommandOpMode {
+@Autonomous(name = "Red_Left1_AprilTags", group = "FTCLib_Red")
+public class Red_Left1_AprilTags extends CommandOpMode {
     private ElapsedTime time;
 
-    // hardware declaration
+    // hardware declarations
     private SimpleServo clawServo;
     private Motor liftMotor;
 
-    // subsystem declaration
+    // subsystem declarations
     private MecanumDriveSubsystem driveSubsystem;
     private LiftSubsystem liftSubsystem;
     private ClawSubsystem clawSubsystem;
@@ -64,21 +61,19 @@ public class Blue_Right1 extends CommandOpMode {
 
     AprilTagDetection tagOfInterest = null;
 
-
     @Override
     public void initialize() {
-        // hardware initialization
+        // hardware initializations
         clawServo = new SimpleServo(hardwareMap, "claw", -90, 90);
         liftMotor = new Motor(hardwareMap, "slide");
 
-        // subsystem initialization
         driveSubsystem = new MecanumDriveSubsystem(new SampleMecanumDrive(hardwareMap), false);
         liftSubsystem = new LiftSubsystem(liftMotor);
         clawSubsystem = new ClawSubsystem(clawServo);
 
-        //imageRec = new ImageRecognitionCommand(time);
         time = new ElapsedTime();
 
+        // opens claw upon initialization
         schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -168,11 +163,10 @@ public class Blue_Right1 extends CommandOpMode {
         telemetry.addData("Tag identified:", tagForCommand);
         telemetry.update();
 
-        schedule(new WaitUntilCommand(this::isStarted)
+        schedule(new WaitUntilCommand(this:: isStarted)
                 .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                .andThen(new MonkeCommands2(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
+                .andThen(new MonkeCommands3(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
     }
-
     public void tagToTelemetry(AprilTagDetection detection)
     {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));

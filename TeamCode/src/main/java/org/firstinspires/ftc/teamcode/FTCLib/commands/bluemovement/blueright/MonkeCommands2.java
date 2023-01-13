@@ -4,14 +4,23 @@ package org.firstinspires.ftc.teamcode.FTCLib.commands.bluemovement.blueright;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftCommand;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftStop;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.OpenClawCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
+
+import java.util.HashMap;
+import java.util.function.IntSupplier;
+
 // blueright
 public class MonkeCommands2 extends SequentialCommandGroup
 {
@@ -23,16 +32,33 @@ public class MonkeCommands2 extends SequentialCommandGroup
     private LiftSubsystem lift;
 
     public MonkeCommands2(MecanumDriveSubsystem mecanumDriveSubsystem,
-                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem)
+                          LiftSubsystem liftSubsystem, ClawSubsystem clawSubsystem, IntSupplier tagID)
     {
         mecanumDriveSubsystem.setPoseEstimate(startPos);
         Trajectory traj1 = mecanumDriveSubsystem.trajectoryBuilder(startPos)
-                .forward(51.0)
+                .lineToSplineHeading(new Pose2d(13.0, 36.0, Math.toRadians(180.0)))
                 .build();
         Trajectory traj2 = mecanumDriveSubsystem.trajectoryBuilder(traj1.end())
-                .strafeLeft(12.0)
+                .lineToSplineHeading(new Pose2d(12.0, 25.5, Math.toRadians(180.0)))
                 .build();
         // stack cone
+        // temporary park code
+        Trajectory trajdeez = mecanumDriveSubsystem.trajectoryBuilder(traj2.end())
+                .lineTo(new Vector2d(13.0, 25.0))
+                .build();
+        // first park position code
+        Trajectory trajy = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
+                .lineToSplineHeading(new Pose2d(13.0, 13.0, Math.toRadians(90.0)))
+                .build();
+        // second park position code
+        Trajectory traj = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
+                .lineToSplineHeading(new Pose2d(13.0, 36.0, Math.toRadians(90.0)))
+                .build();
+        // third park position code
+        Trajectory trajp = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
+                .lineToSplineHeading(new Pose2d(13.0, 58.5, Math.toRadians(180.0)))
+                .build();
+        // end of temporary code
         Trajectory traj3 = mecanumDriveSubsystem.trajectoryBuilder(traj2.end())
                 .lineTo(new Vector2d(13.0, 34.0))
                 .build();
@@ -84,8 +110,25 @@ public class MonkeCommands2 extends SequentialCommandGroup
         //after trajectories
         addCommands(
                 new WaitCommand(600),
-                new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj1),
+                // allowing the slide to move while the first command rush
+                new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj1).alongWith(
+                        new LiftCommand(liftSubsystem, timer)),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj2),
+                // drop cone and wait till its done before continuing the trajectories
+                new WaitCommand(1500),
+                new WaitCommand(500).deadlineWith(new OpenClawCommand(clawSubsystem)),
+                // temporary park code positions selector go pee pee poo poo
+                new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajdeez),
+                new SelectCommand(new HashMap<Object, Command>() {{
+                    put(1, new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajy)
+                            .alongWith(new LiftStop(liftSubsystem)));
+                    put(2, new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj).alongWith(
+                            new LiftStop(liftSubsystem)));
+                    put(3, new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
+                            new LiftStop(liftSubsystem)));
+                }}, () -> tagID.getAsInt() // selector yippee im in pain
+                )
+                /*
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj3),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj4),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj5),
@@ -100,6 +143,7 @@ public class MonkeCommands2 extends SequentialCommandGroup
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj14),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj15),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj16)
+                 */
         );
 
 

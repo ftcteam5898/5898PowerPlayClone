@@ -121,7 +121,7 @@ public class Red_Right1_AprilTags extends CommandOpMode {
 
                 if(tagFound)
                 {
-                    telemetry.addLine("We got em' boys\n\nLocation data:");
+                    telemetry.addLine("We got em' boys ;)\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
                 }
                 else

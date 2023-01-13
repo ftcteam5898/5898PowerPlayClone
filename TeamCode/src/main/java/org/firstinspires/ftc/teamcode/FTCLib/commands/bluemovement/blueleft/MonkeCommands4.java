@@ -126,7 +126,7 @@ public class MonkeCommands4 extends SequentialCommandGroup {
                             new LiftStop(liftSubsystem)));
                     put(3, new TrajectoryFollowerCommand(mecanumDriveSubsystem, trajp).alongWith(
                             new LiftStop(liftSubsystem)));
-                }}, () -> tagID // selector yippee im in pain
+                }}, () -> tagID.getAsInt() // selector yippee im in pain
                 )
                 /*
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj3),
