@@ -121,12 +121,12 @@ public class Red_Right1_AprilTags extends CommandOpMode {
 
                 if(tagFound)
                 {
-                    telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
+                    telemetry.addLine("We got em' boys\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
                 }
                 else
                 {
-                    telemetry.addLine("Don't see tag of interest :(");
+                    telemetry.addLine("Target not sighted :(");
 
                     if(tagOfInterest == null)
                     {
@@ -134,7 +134,7 @@ public class Red_Right1_AprilTags extends CommandOpMode {
                     }
                     else
                     {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                        telemetry.addLine("\nBut we HAVE seen the target before; last seen at:");
                         tagToTelemetry(tagOfInterest);
                     }
                 }
@@ -142,7 +142,7 @@ public class Red_Right1_AprilTags extends CommandOpMode {
             }
             else
             {
-                telemetry.addLine("Don't see tag of interest :(");
+                telemetry.addLine("Target not sighted :(");
 
                 if(tagOfInterest == null)
                 {
