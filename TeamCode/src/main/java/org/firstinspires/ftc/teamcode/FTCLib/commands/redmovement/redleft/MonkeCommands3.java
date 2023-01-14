@@ -31,10 +31,10 @@ public class MonkeCommands3 extends SequentialCommandGroup
     {
         mecanumDriveSubsystem.setPoseEstimate(startPos);
         Trajectory traj1 = mecanumDriveSubsystem.trajectoryBuilder(startPos)
-                .lineToSplineHeading(new Pose2d(-13.0, 36.0, Math.toRadians(0.0)))
+                .lineToSplineHeading(new Pose2d(-11.0, 36.0, Math.toRadians(0.0)))
                 .build();
         Trajectory traj2 = mecanumDriveSubsystem.trajectoryBuilder(traj1.end())
-                .lineToSplineHeading(new Pose2d(-12.0, 25.5, Math.toRadians(0.0)))
+                .lineToSplineHeading(new Pose2d(-11.0, 25.5, Math.toRadians(0.0)))
                 .build();
         // stack cone
         // temporary park code remove later
@@ -43,7 +43,7 @@ public class MonkeCommands3 extends SequentialCommandGroup
                 .build();
         // first park position code
         Trajectory trajy = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
-                .lineToSplineHeading(new Pose2d(-13.0, 13.0, Math.toRadians(270.0)))
+                .lineToSplineHeading(new Pose2d(-13.0, 13.0, Math.toRadians(90.0)))
                 .build();
         // second park position code
         Trajectory traj = mecanumDriveSubsystem.trajectoryBuilder(trajdeez.end())
