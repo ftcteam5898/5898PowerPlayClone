@@ -36,7 +36,7 @@ import java.util.function.IntSupplier;
 
 public class MonkeCommands1 extends SequentialCommandGroup {
     private final Pose2d startPos = new Pose2d(-63.0, -36.0, 0.0);
-    private ElapsedTime timer = new ElapsedTime();
+    public ElapsedTime timer = new ElapsedTime();
     private double timeToLift;
 
     // to be used later

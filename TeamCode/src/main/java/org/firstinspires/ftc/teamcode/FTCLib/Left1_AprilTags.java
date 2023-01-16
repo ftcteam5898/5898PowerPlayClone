@@ -24,8 +24,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 import java.util.function.IntSupplier;
 
-@Autonomous(name = "Red_Left1_AprilTags", group = "FTCLib_Red")
-public class Red_Left1_AprilTags extends CommandOpMode {
+@Autonomous(name = "Left1_AprilTags", group = "FTCLib")
+public class Left1_AprilTags extends CommandOpMode {
     private ElapsedTime time;
 
     // hardware declarations

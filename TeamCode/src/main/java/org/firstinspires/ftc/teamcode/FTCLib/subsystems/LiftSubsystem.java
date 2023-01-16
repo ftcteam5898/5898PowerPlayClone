@@ -7,19 +7,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class LiftSubsystem extends SubsystemBase {
 
-    private Motor motor;
+    private Motor LiftMotor;
 
     public LiftSubsystem(Motor motor) {
-        this.motor = (Motor) motor;
+        LiftMotor = motor;
     }
     public void motorUp() {
-        motor.set(-0.7);
+        LiftMotor.set(-0.7);
     }
     public void motorDown() {
-        motor.set(0.3);
+        LiftMotor.set(0.3);
     }
     public void motorStop() {
-        motor.stopMotor();
+        LiftMotor.stopMotor();
     }
 }
 

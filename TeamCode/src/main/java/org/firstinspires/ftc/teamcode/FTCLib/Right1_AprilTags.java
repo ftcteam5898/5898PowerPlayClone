@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntSupplier;
 
-@Autonomous(name = "Red_Right1_AprilTags", group = "FTCLib_Red")
-public class Red_Right1_AprilTags extends CommandOpMode {
+@Autonomous(name = "Right1_AprilTags", group = "FTCLib")
+public class Right1_AprilTags extends CommandOpMode {
     private ElapsedTime time;
 
     // hardware declaration
