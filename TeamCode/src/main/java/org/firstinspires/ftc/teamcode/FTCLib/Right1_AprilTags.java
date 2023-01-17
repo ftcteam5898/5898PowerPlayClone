@@ -17,6 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redright.MonkeCommands1;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroup;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
@@ -170,7 +171,8 @@ public class Right1_AprilTags extends CommandOpMode {
 
             schedule(new WaitUntilCommand(this::isStarted)
                     .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                    .andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
+                    //.andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
+                    .andThen(new GorillaCommandGroup(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
         }
 
     public void tagToTelemetry(AprilTagDetection detection)
