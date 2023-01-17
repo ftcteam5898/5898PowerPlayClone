@@ -10,13 +10,18 @@ public class LiftStop extends CommandBase {
     private LiftSubsystem subsystem;
     private ElapsedTime time;
     private double liftTime;
+    private boolean yippee = false;
 
-    public LiftStop(LiftSubsystem subsystem) {
-        this.subsystem = subsystem;
-        addRequirements(this.subsystem);
+    public LiftStop(LiftSubsystem liftSubsystem) {
+        subsystem = liftSubsystem;
     }
     @Override
     public void initialize() {
         subsystem.motorStop();
+        yippee = true;
+    }
+    @Override
+    public boolean isFinished() {
+        return yippee;
     }
 }

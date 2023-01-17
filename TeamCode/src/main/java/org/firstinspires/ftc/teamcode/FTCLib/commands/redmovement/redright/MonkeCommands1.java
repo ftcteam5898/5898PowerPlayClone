@@ -5,21 +5,13 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.PrintCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //subsystems
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.FTCLib.Red_Right1;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.CloseClawCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftCommand;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftDownCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.LiftStop;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.OpenClawCommand;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.TrajectoryFollowerCommand;
@@ -27,11 +19,8 @@ import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
 // image recognition stuff
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.IntSupplier;
 
 public class MonkeCommands1 extends SequentialCommandGroup {

@@ -10,29 +10,29 @@ public class LiftCommand extends CommandBase {
 
     private LiftSubsystem subsystem;
     private ElapsedTime time;
-    private double liftTime = 0.02;
+    private double liftTime = 1.2;
     boolean yippee = false;
 
 
-    public LiftCommand(LiftSubsystem liftSubsystem, ElapsedTime timeLift) {
+    public LiftCommand(LiftSubsystem liftSubsystem, ElapsedTime timer) {
         subsystem = liftSubsystem;
-        time = timeLift;
+        time = timer;
     }
 
     @Override
     public void initialize() {
         time.reset();
+        liftTime = 3.4;
         subsystem.motorUp();
-        liftTime = 0.02;
     }
 
     @Override // tells the computer to use my code not the class im extending
     public boolean isFinished() {
-        if (time.seconds() >= liftTime) {
-            yippee = true;
-        }
-        //return time.seconds() >= liftTime;
-        return yippee;
+        return time.seconds() >= liftTime;
+    }
+    @Override
+    public void end(boolean interupted) {
+        subsystem.motorHold();
     }
 }
 
