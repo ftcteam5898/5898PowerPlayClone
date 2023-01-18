@@ -55,6 +55,7 @@ public class PowerPlayTeleOp extends LinearOpMode {
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
         // This is the built-in IMU in the REV hub.
         // We're initializing it by its default parameters
@@ -87,6 +88,8 @@ public class PowerPlayTeleOp extends LinearOpMode {
         int position = 0;
 
         while (!isStopRequested()) {
+            telemetry.addData("Field Centric?", FIELD_CENTRIC);
+
             if (gamepad1.a) FIELD_CENTRIC = true;
             if (gamepad1.b) FIELD_CENTRIC = false;
 
@@ -166,8 +169,8 @@ public class PowerPlayTeleOp extends LinearOpMode {
                 // optional fourth parameter for squared inputs
                 drive.driveRobotCentric(
                         driverOp.getLeftX(),
-                        driverOp.getLeftY(),
-                        driverOp.getRightX(),
+                        driverOp.getLeftY()*-1,
+                gamepad1.right_trigger - gamepad1.left_trigger,
                         false
                 );
             } else {
@@ -190,11 +193,12 @@ public class PowerPlayTeleOp extends LinearOpMode {
                 // optional fifth parameter for squared inputs
                 drive.driveFieldCentric(
                         driverOp.getLeftX(),
-                        driverOp.getLeftY(),
-                        driverOp.getRightX(),
+                        driverOp.getLeftY()*-1,
+                        gamepad1.right_trigger - gamepad1.left_trigger,
                         imu.getRotation2d().getDegrees(),   // gyro value passed in here must be in degrees
                         false
                 );
+                telemetry.update();
             }
 
         }
