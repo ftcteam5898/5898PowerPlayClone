@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -12,12 +13,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
 
 import java.util.HashMap;
 import java.util.function.IntSupplier;
 
 public class GorillaCommandGroupRight extends SequentialCommandGroup {
-    private final Pose2d startPos = new Pose2d(-63.0, 36.0, 0.0);
+    private final Pose2d startPos = new Pose2d(-63.0, -36.0, 0.0);
     public ElapsedTime timer = new ElapsedTime();
     private double timeToLift;
 
@@ -41,38 +44,38 @@ public class GorillaCommandGroupRight extends SequentialCommandGroup {
                 .lineTo(new Vector2d(-13.0, -12.0))
                 .build();
         Trajectory traj6 = mecanumDriveSubsystem.trajectoryBuilder(traj5.end())
-                .lineToSplineHeading(new Pose2d(-12.0, -12.0, Math.toRadians(90.0)))
+                .lineToSplineHeading(new Pose2d(-12.0, -12.0, Math.toRadians(270.0)))
                 .build();
         Trajectory trajpain = mecanumDriveSubsystem.trajectoryBuilder(traj6.end())
-                .lineToSplineHeading(new Pose2d(-13.0, -40.0, Math.toRadians(90.0)))
+                .lineToSplineHeading(new Pose2d(-13.0, -50.0, Math.toRadians(270.0)))
                 .build();
         Trajectory traj7 = mecanumDriveSubsystem.trajectoryBuilder(trajpain.end())
-                .lineToSplineHeading(new Pose2d(-12.0, -58.7, Math.toRadians(90.0)))
+                .lineToSplineHeading(new Pose2d(-12.0, -58.7, Math.toRadians(270.0)))
                 .build();
         Trajectory traj8 = mecanumDriveSubsystem.trajectoryBuilder(traj7.end())
-                .lineToSplineHeading(new Pose2d(-11.0, -34.0, Math.toRadians(90.0)))
+                .lineToSplineHeading(new Pose2d(-13.0, -34.0, Math.toRadians(270.0)))
                 .build();
         Trajectory traj9 = mecanumDriveSubsystem.trajectoryBuilder(traj8.end())
                 .lineToSplineHeading(new Pose2d(-12.0, -36.0, Math.toRadians(0.0)))
                 .build();
         Trajectory traj10 = mecanumDriveSubsystem.trajectoryBuilder(traj9.end())
-                .lineToSplineHeading(new Pose2d(-9.5, -22.0, Math.toRadians(0.0)))
+                .lineToSplineHeading(new Pose2d(-10.0, -22.5, Math.toRadians(0.0)))
                 .build();
         Trajectory traj11 = mecanumDriveSubsystem.trajectoryBuilder(traj10.end())
-                .lineToSplineHeading(new Pose2d(-11.0, -24.0, Math.toRadians(0.0)))
+                .lineToSplineHeading(new Pose2d(-11.0, -21.5, Math.toRadians(0.0)))
                 .build();
         // park position code
         // third position
         Trajectory traj12 = mecanumDriveSubsystem.trajectoryBuilder(traj11.end())
-                .lineToSplineHeading(new Pose2d(-11.0, -12.0, Math.toRadians(90.0)))
+                .lineToSplineHeading(new Pose2d(-11.0, -11.0, Math.toRadians(270.0)))
                 .build();
         // second position
-        Trajectory traj13 = mecanumDriveSubsystem.trajectoryBuilder(traj12.end())
-                .lineToSplineHeading(new Pose2d(-13.0, -38.0, Math.toRadians(90.0)))
+        Trajectory traj13 = mecanumDriveSubsystem.trajectoryBuilder(traj11.end())
+                .lineToSplineHeading(new Pose2d(-13.0, -34.0, Math.toRadians(0.0)))
                 .build();
         // first position
-        Trajectory traj14 = mecanumDriveSubsystem.trajectoryBuilder(traj13.end())
-                .lineToSplineHeading(new Pose2d(-13.0, -58.5, Math.toRadians(0.0)))
+        Trajectory traj14 = mecanumDriveSubsystem.trajectoryBuilder(traj11.end())
+                .lineToSplineHeading(new Pose2d(-11.0, -58.5, Math.toRadians(0.0)))
                 .build();
 
         addCommands(
@@ -95,17 +98,21 @@ public class GorillaCommandGroupRight extends SequentialCommandGroup {
                 new LiftCommand(liftSubsystem, timer, 0.4),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj8),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj9).alongWith(
-                        new LiftCommand(liftSubsystem, timer, 2.7)),
+                        new LiftCommand(liftSubsystem, timer, 2.5)),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj10),
                 new WaitCommand(1000),
                 new WaitCommand(500).deadlineWith(new OpenClawCommand(clawSubsystem)),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj11),
-                new WaitCommand(500).deadlineWith(new LiftStop(liftSubsystem)),
-                new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem)),
+                new LiftDownCommand(liftSubsystem, timer),
                 new SelectCommand(new HashMap<Object, Command>() {{
-                    put(3, new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj12));
-                    put(2, new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj13));
-                    put(1, new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj14));
+                    put(3, new ParallelCommandGroup(new TrajectoryFollowerCommand(mecanumDriveSubsystem,
+                            traj12), new WaitCommand(500).deadlineWith(new LiftStop(liftSubsystem)),
+                            new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem))));
+                    put(2, new ParallelCommandGroup(new TrajectoryFollowerCommand(mecanumDriveSubsystem,
+                            traj13), new WaitCommand(500).deadlineWith(new LiftStop(liftSubsystem))));
+                    put(1, new ParallelCommandGroup(new TrajectoryFollowerCommand(mecanumDriveSubsystem,
+                            traj14), new WaitCommand(500).deadlineWith(new LiftStop(liftSubsystem)),
+                            new WaitCommand(500).deadlineWith(new CloseClawCommand(clawSubsystem))));
                 }}, () -> tagID.getAsInt() // selector yippee im in pain
                 )
 

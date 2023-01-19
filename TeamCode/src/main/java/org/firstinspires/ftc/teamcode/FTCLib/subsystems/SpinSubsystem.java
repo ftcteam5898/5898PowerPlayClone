@@ -12,6 +12,7 @@ public class SpinSubsystem extends SubsystemBase {
         spinMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
     public void holdSpin() {
+        spinMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         spinMotor.stopMotor();
     }
 }

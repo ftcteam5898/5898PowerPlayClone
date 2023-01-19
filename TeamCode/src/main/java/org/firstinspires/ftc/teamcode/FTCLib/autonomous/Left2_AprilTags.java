@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.FTCLib;
+package org.firstinspires.ftc.teamcode.FTCLib.autonomous;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -10,12 +10,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroupLeft;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroupRight;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.SpinSubsystem;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroup;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
@@ -25,8 +26,8 @@ import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
 import java.util.ArrayList;
 import java.util.function.IntSupplier;
 
-@Autonomous(name = "Right1_AprilTags", group = "FTCLib")
-public class Right1_AprilTags extends CommandOpMode {
+@Autonomous(name = "LeagueTournamentLeft", group = "FTCLib")
+public class Left2_AprilTags extends CommandOpMode {
     private ElapsedTime time;
 
     // hardware declaration
@@ -163,7 +164,7 @@ public class Right1_AprilTags extends CommandOpMode {
             telemetry.update();
             sleep(20);
         }
-            int tagForCommand = 0;
+        int tagForCommand = 0;
         if (tagOfInterest == null) tagForCommand = 1;
         else tagForCommand = tagOfInterest.id;
         final int tagNum = tagForCommand;
@@ -172,11 +173,10 @@ public class Right1_AprilTags extends CommandOpMode {
         telemetry.addData("Tag identified:", tagForCommand);
         telemetry.update();
 
-            schedule(new WaitUntilCommand(this::isStarted)
-                    .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                    //.andThen(new MonkeCommands1(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
-                    .andThen(new GorillaCommandGroup(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
-        }
+        schedule(new WaitUntilCommand(this::isStarted)
+                .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
+                .andThen(new GorillaCommandGroupLeft(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
+    }
 
     public void tagToTelemetry(AprilTagDetection detection)
     {
@@ -188,8 +188,4 @@ public class Right1_AprilTags extends CommandOpMode {
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
-    }
-
-
-
-
+}

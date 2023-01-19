@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.FTCLib;
+package org.firstinspires.ftc.teamcode.FTCLib.autonomous;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.FTCLib.commands.MonkeCommandsLeft;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.FTCLib.subsystems.SpinSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
 import org.openftc.apriltag.AprilTagDetection;
@@ -31,11 +32,13 @@ public class Left1_AprilTags extends CommandOpMode {
     // hardware declarations
     private SimpleServo clawServo;
     private Motor liftMotor;
+    private Motor spinMotor;
 
     // subsystem declarations
     private MecanumDriveSubsystem driveSubsystem;
     private LiftSubsystem liftSubsystem;
     private ClawSubsystem clawSubsystem;
+    private SpinSubsystem spinSubsystem;
 
     // camera & CV
     OpenCvCamera camera;
@@ -66,15 +69,18 @@ public class Left1_AprilTags extends CommandOpMode {
         // hardware initializations
         clawServo = new SimpleServo(hardwareMap, "claw", -90, 90);
         liftMotor = new Motor(hardwareMap, "slide");
+        spinMotor = new Motor(hardwareMap, "spin");
 
         driveSubsystem = new MecanumDriveSubsystem(new SampleMecanumDrive(hardwareMap), false);
         liftSubsystem = new LiftSubsystem(liftMotor);
         clawSubsystem = new ClawSubsystem(clawServo);
+        spinSubsystem = new SpinSubsystem(spinMotor);
 
         time = new ElapsedTime();
 
-        // opens claw upon initialization
+        // opens claw upon initialization and holds spin in place
         schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
+        schedule(new InstantCommand(() -> spinSubsystem.holdSpin()));
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
