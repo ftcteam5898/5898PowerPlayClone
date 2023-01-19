@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
+import org.firstinspires.ftc.teamcode.FTCLib.subsystems.SpinSubsystem;
 
 public class LiftCommand extends CommandBase {
 
@@ -14,15 +15,16 @@ public class LiftCommand extends CommandBase {
     boolean yippee = false;
 
 
-    public LiftCommand(LiftSubsystem liftSubsystem, ElapsedTime timer) {
+    public LiftCommand(LiftSubsystem liftSubsystem, ElapsedTime timer, double timeToLift) {
         subsystem = liftSubsystem;
         time = timer;
+        liftTime = timeToLift;
     }
 
     @Override
     public void initialize() {
         time.reset();
-        liftTime = 3.4;
+        // 3.4 top junction estimate 0.42 first cone estimate
         subsystem.motorUp();
     }
 
@@ -32,7 +34,12 @@ public class LiftCommand extends CommandBase {
     }
     @Override
     public void end(boolean interupted) {
-        subsystem.motorHold();
+        if (liftTime >= 2.0) {
+            subsystem.highMotorHold();
+        }
+        else {
+            subsystem.motorHold();
+        }
     }
 }
 

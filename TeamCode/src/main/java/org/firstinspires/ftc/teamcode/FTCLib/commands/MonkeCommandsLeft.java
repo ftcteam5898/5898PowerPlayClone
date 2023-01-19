@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redleft;
+package org.firstinspires.ftc.teamcode.FTCLib.commands;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -22,12 +22,12 @@ import java.util.HashMap;
 import java.util.function.IntSupplier;
 
 //redleft
-public class MonkeCommands3 extends SequentialCommandGroup
+public class MonkeCommandsLeft extends SequentialCommandGroup
 {
     private final Pose2d startPos = new Pose2d(-63.0, 36.0, 0.0);
     private ElapsedTime timer = new ElapsedTime();
-    public MonkeCommands3(MecanumDriveSubsystem mecanumDriveSubsystem, LiftSubsystem liftSubsystem,
-                          ClawSubsystem clawSubsystem, IntSupplier tagID)
+    public MonkeCommandsLeft(MecanumDriveSubsystem mecanumDriveSubsystem, LiftSubsystem liftSubsystem,
+                             ClawSubsystem clawSubsystem, IntSupplier tagID)
     {
         mecanumDriveSubsystem.setPoseEstimate(startPos);
         Trajectory traj1 = mecanumDriveSubsystem.trajectoryBuilder(startPos)
@@ -107,7 +107,7 @@ public class MonkeCommands3 extends SequentialCommandGroup
                 new WaitCommand(600),
                 // allowing the slide to move while the first command rush
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj1).alongWith(
-                        new LiftCommand(liftSubsystem, timer)),
+                        new LiftCommand(liftSubsystem, timer, 3.4)),
                 new TrajectoryFollowerCommand(mecanumDriveSubsystem, traj2),
                 // drop cone and wait till its done before continuing the trajectories
                 new WaitCommand(1500),

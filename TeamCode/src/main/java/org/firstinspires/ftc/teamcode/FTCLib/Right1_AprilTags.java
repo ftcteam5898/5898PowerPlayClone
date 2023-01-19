@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.FTCLib;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -11,12 +10,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.FTCLib.subsystems.SpinSubsystem;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redright.MonkeCommands1;
 import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroup;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
@@ -25,7 +23,6 @@ import org.firstinspires.ftc.teamcode.FTCLib.vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.RoadRunnerDooDoo.drive.SampleMecanumDrive;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.IntSupplier;
 
 @Autonomous(name = "Right1_AprilTags", group = "FTCLib")
@@ -35,11 +32,13 @@ public class Right1_AprilTags extends CommandOpMode {
     // hardware declaration
     private SimpleServo clawServo;
     private Motor liftMotor;
+    private Motor spinMotor;
 
     // subsystem declaration
     private MecanumDriveSubsystem driveSubsystem;
     private LiftSubsystem liftSubsystem;
     private ClawSubsystem clawSubsystem;
+    private SpinSubsystem spinSubsystem;
 
     // camera & CV
     OpenCvCamera camera;
@@ -71,16 +70,20 @@ public class Right1_AprilTags extends CommandOpMode {
         // hardware initialization
         clawServo = new SimpleServo(hardwareMap, "claw", -90, 90);
         liftMotor = new Motor(hardwareMap, "slide");
+        spinMotor = new Motor(hardwareMap, "spin");
 
         // subsystem initialization
         driveSubsystem = new MecanumDriveSubsystem(new SampleMecanumDrive(hardwareMap), false);
         liftSubsystem = new LiftSubsystem(liftMotor);
         clawSubsystem = new ClawSubsystem(clawServo);
+        spinSubsystem = new SpinSubsystem(spinMotor);
+
 
         //imageRec = new ImageRecognitionCommand(time);
         time = new ElapsedTime();
 
         schedule(new InstantCommand(() -> clawSubsystem.openClaw()));
+        schedule(new InstantCommand(() -> spinSubsystem.holdSpin()));
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);

@@ -17,11 +17,14 @@ public class LiftStop extends CommandBase {
     }
     @Override
     public void initialize() {
-        subsystem.motorStop();
         yippee = true;
     }
     @Override
     public boolean isFinished() {
         return yippee;
+    }
+    @Override
+    public void end(boolean interupted) {
+        subsystem.motorStop();
     }
 }

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.redmovement.redleft.MonkeCommands3;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.MonkeCommandsLeft;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.MecanumDriveSubsystem;
@@ -165,7 +165,7 @@ public class Left1_AprilTags extends CommandOpMode {
 
         schedule(new WaitUntilCommand(this:: isStarted)
                 .andThen(new InstantCommand(() -> clawSubsystem.closeClaw()))
-                .andThen(new MonkeCommands3(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
+                .andThen(new MonkeCommandsLeft(driveSubsystem, liftSubsystem, clawSubsystem, tagID)));
     }
     public void tagToTelemetry(AprilTagDetection detection)
     {
