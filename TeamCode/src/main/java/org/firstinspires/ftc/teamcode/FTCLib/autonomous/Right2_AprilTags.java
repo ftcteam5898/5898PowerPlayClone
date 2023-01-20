@@ -78,6 +78,8 @@ public class Right2_AprilTags extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(clawServo);
         spinSubsystem = new SpinSubsystem(spinMotor);
 
+        telemetry.addLine("yippee Philips :)");
+        telemetry.addLine("good luck drivers <3");
 
         //imageRec = new ImageRecognitionCommand(time);
         time = new ElapsedTime();

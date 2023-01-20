@@ -79,6 +79,9 @@ public class Left2_AprilTags extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(clawServo);
         spinSubsystem = new SpinSubsystem(spinMotor);
 
+        telemetry.addLine("yippee Philips :)");
+        telemetry.addLine("good luck drivers <3");
+
 
         //imageRec = new ImageRecognitionCommand(time);
         time = new ElapsedTime();
@@ -135,7 +138,7 @@ public class Left2_AprilTags extends CommandOpMode {
 
                     if(tagOfInterest == null)
                     {
-                        telemetry.addLine("(The tag has never been seen)");
+                        telemetry.addLine("(The target has never been seen)");
                     }
                     else
                     {
@@ -151,11 +154,11 @@ public class Left2_AprilTags extends CommandOpMode {
 
                 if(tagOfInterest == null)
                 {
-                    telemetry.addLine("(The tag has never been seen)");
+                    telemetry.addLine("(The target has never been seen)");
                 }
                 else
                 {
-                    telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                    telemetry.addLine("\nBut we HAVE seen the target before; last seen at:");
                     tagToTelemetry(tagOfInterest);
                 }
 
@@ -170,7 +173,7 @@ public class Left2_AprilTags extends CommandOpMode {
         final int tagNum = tagForCommand;
         IntSupplier tagID = () -> tagNum;
 
-        telemetry.addData("Tag identified:", tagForCommand);
+        telemetry.addData("Target identified:", tagForCommand);
         telemetry.update();
 
         schedule(new WaitUntilCommand(this::isStarted)
