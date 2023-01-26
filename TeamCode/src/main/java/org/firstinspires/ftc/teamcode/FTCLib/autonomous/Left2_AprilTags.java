@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroupLeft;
-import org.firstinspires.ftc.teamcode.FTCLib.commands.GorillaCommandGroupRight;
+import org.firstinspires.ftc.teamcode.FTCLib.commands.auto.GorillaCommandGroupLeft;
 import org.firstinspires.ftc.teamcode.FTCLib.subsystems.SpinSubsystem;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;

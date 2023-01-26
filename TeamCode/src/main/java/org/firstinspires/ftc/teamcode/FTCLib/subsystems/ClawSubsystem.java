@@ -17,5 +17,8 @@ public class ClawSubsystem extends SubsystemBase {
     public void closeClaw() {
         servo.setPosition(50.0);
     }
+    public void resetClaw() {
+        servo.setPosition(0.0);
+    }
 }
 

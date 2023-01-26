@@ -12,6 +12,10 @@ public class LiftSubsystem extends SubsystemBase {
     public LiftSubsystem(Motor motor) {
         liftMotor = motor;
     }
+    public LiftSubsystem(Motor motor, int different) {
+        liftMotor = motor;
+        liftMotor.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void motorUp() {
         liftMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         liftMotor.set(-0.7);
