@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
  */
 
 @TeleOp(name="Teleop", group="Iterative Opmode")
-
+@Disabled
 public class Teleop extends OpMode
 {
     // Declare OpMode members.
