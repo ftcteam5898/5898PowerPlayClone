@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.FTCLib.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -11,9 +12,13 @@ public class ClawSubsystem extends SubsystemBase {
         this.servo = servo;
     }
     public void openClaw() {
-        //servo.setPosition(openPos);
+        servo.setPosition(-80.0);
     }
     public void closeClaw() {
-        //servo.setPosition(closePos);
+        servo.setPosition(50.0);
+    }
+    public void resetClaw() {
+        servo.setPosition(0.0);
     }
 }
+
